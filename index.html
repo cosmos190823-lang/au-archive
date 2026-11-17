@@ -186,14 +186,14 @@ const CF = [
   {k:'job', label:'소속 / 직업', ph:'신문사 기자, OO고 2학년'},
   {k:'height', label:'키 / 체격'},
   {k:'birthday', label:'생일'},
+  {k:'habit', label:'버릇 / 특징', area:true},
   {k:'kw', label:'성격 키워드', ph:'쉼표로 구분: 무뚝뚝, 다정'},
   {k:'pers', label:'성격 (줄글)', area:true},
   {k:'likes', label:'좋아하는 것'},
   {k:'dislikes', label:'싫어하는 것'},
-  {k:'habit', label:'버릇 / 특징', area:true},
   {k:'song', label:'테마곡 링크', ph:'https://'}
 ];
-const DETAIL_KEYS = [['look','외관'],['height','키 / 체격'],['birthday','생일'],['pers','성격'],['likes','좋아하는 것'],['dislikes','싫어하는 것'],['habit','버릇 / 특징'],['song','테마곡']];
+const DETAIL_KEYS = [['look','외관'],['height','키 / 체격'],['birthday','생일'],['habit','버릇 / 특징'],['pers','성격'],['likes','좋아하는 것'],['dislikes','싫어하는 것'],['song','테마곡']];
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -327,10 +327,10 @@ function renderFace(p, ai){
       ${c.kw.length ? `<div class="chips">${c.kw.map(k => `<span class="chip">${esc(k)}</span>`).join('')}</div>` : ''}
     </div>`;
   const mid = `<div class="mid">
-      ${au.callAB ? `<div class="call" style="color:${esc(cs[0].color)}">“${esc(au.callAB)}”</div>` : ''}
+      ${au.callAB ? `<div class="call" style="color:${esc(cs[0].color)}">${esc(au.callAB)}</div>` : ''}
       ${arrow('r', cs[0].color)}
       ${arrow('l', cs[1].color)}
-      ${au.callBA ? `<div class="call" style="color:${esc(cs[1].color)}">“${esc(au.callBA)}”</div>` : ''}
+      ${au.callBA ? `<div class="call" style="color:${esc(cs[1].color)}">${esc(au.callBA)}</div>` : ''}
     </div>`;
   const tint = (hex) => hex + '22';
   const lines = (au.lineAB || au.lineBA) ? `<div class="lines">
@@ -395,9 +395,9 @@ function renderTable(p){
     return `<tr><td class="rowh">호칭</td>${p.aus.map((a, ai) => {
       const ca = R(p, ai, 0, 'color').v, cb = R(p, ai, 1, 'color').v;
       return `<td><div class="tcall">
-        <span class="c" style="color:${esc(ca)}">${a.callAB ? `“${esc(a.callAB)}”` : '-'}</span>
+        <span class="c" style="color:${esc(ca)}">${a.callAB ? `${esc(a.callAB)}` : '-'}</span>
         ${arrow('r', ca)}${arrow('l', cb)}
-        <span class="c" style="color:${esc(cb)}">${a.callBA ? `“${esc(a.callBA)}”` : '-'}</span>
+        <span class="c" style="color:${esc(cb)}">${a.callBA ? `${esc(a.callBA)}` : '-'}</span>
       </div></td>`;
     }).join('')}</tr>`;
   };
@@ -660,9 +660,9 @@ function staticFace(p, ai){
     + (c.kw.length ? `<div style="margin-top:8px;">${c.kw.map(k => `<span style="display:inline-block;font-size:12px;padding:2px 8px;margin:2px;border-radius:99px;background:${ST.soft};color:${ST.sub};">${esc(k)}</span>`).join('')}</div>` : '')
     + `</div>`;
   const mid = `<div style="flex:0 0 74px;text-align:center;font-size:13px;line-height:1.3;">`
-    + (au.callAB ? `<div style="font-weight:600;color:${esc(cs[0].color)};">“${esc(au.callAB)}”</div>` : '')
+    + (au.callAB ? `<div style="font-weight:600;color:${esc(cs[0].color)};">${esc(au.callAB)}</div>` : '')
     + `<div style="font-size:22px;line-height:1;color:${esc(cs[0].color)};">→</div><div style="font-size:22px;line-height:1;color:${esc(cs[1].color)};">←</div>`
-    + (au.callBA ? `<div style="font-weight:600;color:${esc(cs[1].color)};">“${esc(au.callBA)}”</div>` : '')
+    + (au.callBA ? `<div style="font-weight:600;color:${esc(cs[1].color)};">${esc(au.callBA)}</div>` : '')
     + `</div>`;
   const bub = (txt, from, to, right) => `<div style="text-align:${right ? 'right' : 'left'};margin-top:8px;"><div style="display:inline-block;max-width:86%;text-align:${right ? 'right' : 'left'};padding:9px 13px;border-radius:16px;background:${esc(from.color)}22;font-size:14px;white-space:pre-wrap;"><div style="font-size:11px;font-weight:600;color:${esc(from.color)};">${esc(from.name)} → ${esc(to.name)}</div>${esc(txt)}</div></div>`;
   const sec = (title, inner) => `<div style="margin-top:20px;border-top:1px solid ${ST.line};padding-top:16px;"><div style="font-size:12px;color:${ST.muted};font-weight:600;margin-bottom:6px;">${title}</div>${inner}</div>`;
@@ -707,7 +707,7 @@ function staticTable(p){
   auRow('관계', 'relation');
   if (p.aus.some(a => a.callAB || a.callBA)) rows += `<tr><td style="${th}">호칭</td>${p.aus.map((a, ai) => {
     const ca = R(p, ai, 0, 'color').v, cb = R(p, ai, 1, 'color').v;
-    return `<td style="${td}text-align:center;line-height:1.3;"><div style="font-weight:600;color:${esc(ca)};">${a.callAB ? `“${esc(a.callAB)}”` : '-'}</div><div style="font-size:20px;line-height:1;color:${esc(ca)};">→</div><div style="font-size:20px;line-height:1;color:${esc(cb)};">←</div><div style="font-weight:600;color:${esc(cb)};">${a.callBA ? `“${esc(a.callBA)}”` : '-'}</div></td>`;
+    return `<td style="${td}text-align:center;line-height:1.3;"><div style="font-weight:600;color:${esc(ca)};">${a.callAB ? `${esc(a.callAB)}` : '-'}</div><div style="font-size:20px;line-height:1;color:${esc(ca)};">→</div><div style="font-size:20px;line-height:1;color:${esc(cb)};">←</div><div style="font-weight:600;color:${esc(cb)};">${a.callBA ? `${esc(a.callBA)}` : '-'}</div></td>`;
   }).join('')}</tr>`;
   if (p.aus.some(a => a.lineAB || a.lineBA)) rows += `<tr><td style="${th}">한마디</td>${p.aus.map((a, ai) => `<td style="${td}"><div>${dot(R(p, ai, 0, 'color').v)}→ ${esc(a.lineAB || '-')}</div><div>${dot(R(p, ai, 1, 'color').v)}→ ${esc(a.lineBA || '-')}</div></td>`).join('')}</tr>`;
   const head = `<tr><td style="${th}border-top:0;"></td>${p.aus.map(a => `<td style="${td}border-top:0;font-weight:700;font-size:14px;white-space:nowrap;">${dot(a.color)}${esc(a.name || 'AU')}</td>`).join('')}</tr>`;
