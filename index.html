@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OC 페어 AU 정리장</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#f6f4f1;--card:#ffffff;--line:#e6e1da;--line2:#d6cfc5;
+  --text:#2b2926;--sub:#77716a;--muted:#aaa39a;--soft:#f1eee9;
+  --au:#9b8cf2;--a:#6f8ff0;--b:#ee7fa6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line2);background:var(--card);border-radius:10px;padding:7px 12px;font-size:14px}
+button:active{transform:scale(.98)}
+button.primary{background:var(--text);color:#fff;border-color:var(--text)}
+button.ghost{border-color:transparent;background:transparent}
+button.danger{color:#c2413b;border-color:#efc9c6}
+.wrap{max-width:600px;margin:0 auto;padding:16px 14px 40px}
+
+header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+header h1{font-size:17px;font-weight:600;margin:0;flex:none}
+header select{flex:1;min-width:0;border:1px solid var(--line2);background:var(--card);border-radius:10px;padding:7px 10px;font-size:14px}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border-radius:99px;padding:6px 14px;border:1px solid var(--line2);background:var(--card);font-size:14px;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tab .dot{width:8px;height:8px;border-radius:50%}
+.tab.on{background:var(--text);color:#fff;border-color:var(--text)}
+.tab.add{color:var(--sub);border-style:dashed}
+
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 14px}
+.seg{display:flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--card)}
+.seg button{border:0;border-radius:0;padding:7px 12px}
+.seg button.on{background:var(--text);color:#fff}
+.bar .acts{display:flex;gap:6px}
+
+/* face view */
+.cap{position:relative;background:var(--card);border-radius:18px;border:1px solid var(--line);padding:22px 16px 30px;overflow:hidden}
+.cap::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--au)}
+.au-head{text-align:center;margin-bottom:18px}
+.au-name{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.au-intro{color:var(--sub);font-size:14px;margin-top:2px;white-space:pre-wrap}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) 74px minmax(0,1fr);gap:6px;align-items:stretch}
+.pc{border:1px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#fff}
+.pc img{width:88px;height:88px;border-radius:50%;display:block;margin:0 auto 10px;border:3px solid var(--cc)}
+.pc .nm{font-weight:700;font-size:16px;color:var(--cc);word-break:keep-all;overflow-wrap:anywhere}
+.pc .meta{font-size:13px;color:var(--sub);margin-top:2px;word-break:keep-all;overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:8px}
+.chip{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--soft);color:var(--sub)}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;font-size:13px}
+.mid .call{font-weight:600;word-break:keep-all;overflow-wrap:anywhere;line-height:1.35}
+.mid svg{display:block}
+.lines{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.bub{max-width:86%;padding:9px 13px;border-radius:16px;font-size:14px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.bub .who{display:block;font-size:11px;font-weight:600;margin-bottom:1px}
+.bub.l{align-self:flex-start;border-bottom-left-radius:4px}
+.bub.r{align-self:flex-end;border-bottom-right-radius:4px;text-align:right}
+.sec{margin-top:20px;border-top:1px solid var(--line);padding-top:16px}
+.sec h3{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 6px;letter-spacing:.02em}
+.rel{font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text)}
+.prose{white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-size:14px;line-height:1.75}
+.fold{max-height:9.2em;overflow:hidden;position:relative}
+.fold.long::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.4em;background:linear-gradient(rgba(255,255,255,0),#fff)}
+.fold.open{max-height:none}.fold.open::after{display:none}
+.foldbtn{margin-top:6px;font-size:13px;color:var(--sub);padding:4px 10px}
+.det{margin-top:12px}
+.det .who{font-weight:700;color:var(--cc);margin-bottom:4px;font-size:15px}
+.kv{display:grid;grid-template-columns:84px minmax(0,1fr);gap:4px 10px;font-size:14px;margin-bottom:14px}
+.kv dt{color:var(--muted);font-size:13px;padding-top:1px}
+.kv dd{margin:0;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.kv a{color:var(--cc)}
+.credit{position:absolute;right:14px;bottom:9px;font-size:11px;color:var(--muted);max-width:80%;text-align:right;line-height:1.3}
+.empty{color:var(--muted);text-align:center;font-size:14px;padding:16px 0 0}
+.toggle-det{display:block;margin:16px auto 0;font-size:13px;color:var(--sub)}
+
+/* table view */
+.tcap{position:relative;background:var(--card);border-radius:18px;border:1px solid var(--line);padding:18px 0 30px}
+.tcap .ttl{font-weight:700;font-size:17px;padding:0 16px 10px}
+.twrap{overflow-x:auto}
+table.cmp{border-collapse:separate;border-spacing:0;font-size:13px;min-width:100%}
+.cmp th,.cmp td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;text-align:left;min-width:128px;max-width:200px;word-break:keep-all;overflow-wrap:anywhere}
+.cmp thead th{border-top:0;white-space:nowrap}
+.cmp th.rowh,.cmp td.rowh{position:sticky;left:0;background:var(--card);min-width:76px;max-width:76px;color:var(--muted);font-weight:500;z-index:1;border-right:1px solid var(--line)}
+.cmp .auh{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;cursor:pointer;border:0;background:none;padding:0}
+.cmp .auh i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.ab{display:flex;gap:6px;align-items:baseline}
+.ab+.ab{margin-top:3px}
+.ab i{flex:none;width:7px;height:7px;border-radius:50%;display:inline-block;transform:translateY(-1px)}
+.inh{color:var(--muted)}
+.tnote{font-size:12px;color:var(--muted);padding:10px 16px 0}
+
+/* export mode */
+body.exporting .fold{max-height:none}
+body.exporting .fold::after,body.exporting .foldbtn,body.exporting .toggle-det,body.exporting .noexp{display:none!important}
+body.exporting .twrap{overflow:visible}
+body.exporting .tcap{width:max-content;min-width:100%}
+body.exporting .cmp th.rowh,body.exporting .cmp td.rowh{position:static}
+
+footer{margin-top:22px;text-align:center;font-size:12px;color:var(--muted)}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(30,26,22,.42);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.sheet{background:var(--bg);width:100%;max-width:600px;max-height:92vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:640px){.ov{align-items:center}.sheet{border-radius:18px;max-height:88vh}}
+.sh-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}
+.sh-head b{font-size:16px}
+.sh-body{overflow-y:auto;padding:14px 16px 24px;-webkit-overflow-scrolling:touch}
+.sh-foot{display:flex;gap:8px;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--card)}
+.grp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.grp>h4{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
+.grp>h4 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.f{margin-bottom:12px}
+.f:last-child{margin-bottom:0}
+.f label{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--sub);margin-bottom:4px}
+.f label .same{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.f input[type=text],.f textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;background:#fff;font-size:15px}
+.f textarea{min-height:76px;resize:vertical;line-height:1.6}
+.f textarea.tall{min-height:170px}
+.f input:disabled,.f textarea:disabled{background:var(--soft);color:var(--muted)}
+.hint{font-size:12px;color:var(--muted);margin-top:3px}
+.sw{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sw button{width:28px;height:28px;border-radius:50%;padding:0;border:2px solid #fff;box-shadow:0 0 0 1px var(--line2)}
+.sw input[type=color]{width:34px;height:30px;border:0;padding:0;background:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.imgrow{display:flex;gap:12px;align-items:center}
+.imgrow .pv{width:64px;height:64px;border-radius:50%;background:var(--soft);flex:none;background-size:cover;background-position:center;border:1px solid var(--line2)}
+.imgrow .btns{display:flex;gap:6px;flex-wrap:wrap}
+
+.menu{display:flex;flex-direction:column;gap:8px}
+.menu button{text-align:left;padding:11px 14px;font-size:15px}
+.menu hr{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
+
+/* cropper */
+.crop-stage{position:relative;width:100%;max-width:320px;margin:0 auto;aspect-ratio:1;touch-action:none;border-radius:12px;overflow:hidden;background:#222}
+.crop-stage canvas{width:100%;height:100%;display:block}
+.zoomrow{display:flex;align-items:center;gap:10px;max-width:320px;margin:14px auto 0;font-size:13px;color:var(--sub)}
+.zoomrow input{flex:1}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--text);color:#fff;padding:9px 16px;border-radius:99px;font-size:14px;z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AU 정리장</h1>
+    <select id="pairSel" aria-label="페어 선택"></select>
+    <button id="menuBtn" aria-label="메뉴">⋯</button>
+  </header>
+  <div class="tabs" id="tabs"></div>
+  <div class="bar">
+    <div class="seg">
+      <button data-view="face">마주보기</button>
+      <button data-view="table">비교 표</button>
+    </div>
+    <div class="acts">
+      <button id="editBtn">편집</button>
+      <button id="pngBtn" class="primary">PNG 저장</button>
+    </div>
+  </div>
+  <main id="main"></main>
+  <footer>모든 내용은 이 브라우저에만 저장돼요.<br>기기를 바꾸거나 기록을 지우기 전에 ⋯ 메뉴에서 백업해 주세요.</footer>
+</div>
+<input type="file" id="imgFile" accept="image/*" hidden>
+<input type="file" id="jsonFile" accept="application/json,.json" hidden>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const KEY = 'oc-pair-au-v1';
+const AU_COLORS = ['#9b8cf2','#f29bb8','#7cc4b0','#f2b56b','#8fb3f2','#c49bdb','#e88a7d','#9cc47c'];
+const CHAR_COLORS = ['#6f8ff0','#ee7fa6','#4fae8f','#e0953b','#8a6fd8','#d96459','#5a9fd1','#7a8c4f'];
+const DEF_CC = ['#6f8ff0','#ee7fa6'];
+const CF = [
+  {k:'name', label:'이름', toggle:true},
+  {k:'look', label:'외관', area:true, toggle:true},
+  {k:'age', label:'나이'},
+  {k:'job', label:'소속 / 직업', ph:'신문사 기자, OO고 2학년'},
+  {k:'height', label:'키 / 체격'},
+  {k:'birthday', label:'생일'},
+  {k:'kw', label:'성격 키워드', ph:'쉼표로 구분: 무뚝뚝, 다정'},
+  {k:'pers', label:'성격 (줄글)', area:true},
+  {k:'likes', label:'좋아하는 것'},
+  {k:'dislikes', label:'싫어하는 것'},
+  {k:'habit', label:'버릇 / 특징', area:true},
+  {k:'song', label:'테마곡 링크', ph:'https://'}
+];
+const DETAIL_KEYS = [['look','외관'],['height','키 / 체격'],['birthday','생일'],['pers','성격'],['likes','좋아하는 것'],['dislikes','싫어하는 것'],['habit','버릇 / 특징'],['song','테마곡']];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+function newChar(isBase){
+  const c = {color:'', img:'', credit:'', nameSame:!isBase, lookSame:!isBase};
+  CF.forEach(f => c[f.k] = '');
+  return c;
+}
+function newAU(isBase, idx){
+  return {id:uid(), name:isBase?'원작':'새 AU', intro:'', color:AU_COLORS[idx % AU_COLORS.length],
+    relation:'', story:'', diff:'', chars:[newChar(isBase), newChar(isBase)],
+    callAB:'', callBA:'', lineAB:'', lineBA:''};
+}
+function newPair(name){
+  const p = {id:uid(), name:name || '새 페어', aus:[newAU(true, 0)]};
+  p.aus[0].chars[0].color = DEF_CC[0];
+  p.aus[0].chars[1].color = DEF_CC[1];
+  return p;
+}
+function normPair(p){
+  const out = newPair(p.name);
+  out.id = p.id || uid();
+  if (Array.isArray(p.aus) && p.aus.length){
+    out.aus = p.aus.map((a, i) => {
+      const base = newAU(i === 0, i);
+      const au = Object.assign(base, a, {id:a.id || uid()});
+      au.chars = [0,1].map(ci => Object.assign(newChar(i === 0), (a.chars || [])[ci] || {}));
+      return au;
+    });
+  }
+  return out;
+}
+
+let S;
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if (d && Array.isArray(d.pairs) && d.pairs.length){
+      d.pairs = d.pairs.map(normPair);
+      return Object.assign({view:'face'}, d);
+    }
+  }catch(e){}
+  const p = newPair('새 페어');
+  return {v:1, pairs:[p], cur:p.id, auId:p.aus[0].id, view:'face'};
+}
+S = load();
+let saveT;
+function save(){
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    try{ localStorage.setItem(KEY, JSON.stringify(S)); }
+    catch(e){ toast('브라우저 저장 공간이 부족해요. 백업 후 사진을 줄여주세요.'); }
+  }, 250);
+}
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+const pair = () => S.pairs.find(p => p.id === S.cur) || S.pairs[0];
+function auIdx(){
+  const p = pair(); let i = p.aus.findIndex(a => a.id === S.auId);
+  if (i < 0){ i = 0; S.auId = p.aus[0].id; }
+  return i;
+}
+
+/* resolve value with inheritance from 원작 (first AU) */
+function R(p, ai, ci, k){
+  const c = p.aus[ai].chars[ci], b = p.aus[0].chars[ci];
+  if (k === 'img'){
+    if (ai === 0 || c.img) return {v:c.img, credit:c.credit, inh:false};
+    return {v:b.img, credit:b.credit, inh:true};
+  }
+  if (k === 'color') return {v:b.color || DEF_CC[ci], inh:ai > 0};
+  if (ai === 0) return {v:c[k] || '', inh:false};
+  if ((k === 'name' || k === 'look') && c[k + 'Same']) return {v:b[k] || '', inh:true};
+  if (c[k]) return {v:c[k], inh:false};
+  return {v:b[k] || '', inh:true};
+}
+const dispName = (p, ai, ci) => R(p, ai, ci, 'name').v || (ci ? '캐릭터 B' : '캐릭터 A');
+const kwList = s => String(s || '').split(/[,，、]/).map(x => x.trim()).filter(Boolean);
+const isUrl = s => /^https?:\/\//i.test(String(s || '').trim());
+
+/* ---------- render ---------- */
+let showDetails = false;
+const openFolds = new Set();
+
+function render(){
+  const p = pair();
+  $('#pairSel').innerHTML = S.pairs.map(x => `<option value="${x.id}" ${x.id === p.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('');
+  const ai = auIdx();
+  $('#tabs').innerHTML = p.aus.map((a, i) =>
+    `<button class="tab ${i === ai && S.view === 'face' ? 'on' : ''}" data-au="${a.id}"><span class="dot" style="background:${esc(a.color)}"></span>${esc(a.name || '이름 없는 AU')}</button>`
+  ).join('') + `<button class="tab add" id="addAu">+ AU 추가</button>`;
+  document.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.dataset.view === S.view));
+  $('#editBtn').style.display = S.view === 'face' ? '' : 'none';
+  $('#main').innerHTML = S.view === 'face' ? renderFace(p, ai) : renderTable(p);
+}
+
+function arrow(dir, color){
+  const path = dir === 'r' ? 'M2 7h56M50 2l8 5-8 5' : 'M58 7H2M10 2L2 7l8 5';
+  return `<svg width="60" height="14" viewBox="0 0 60 14" fill="none" stroke="${esc(color)}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
+}
+
+function foldBlock(id, text){
+  const long = text.length > 160 || (text.match(/\n/g) || []).length > 4;
+  if (!long) return `<div class="prose">${esc(text)}</div>`;
+  const open = openFolds.has(id);
+  return `<div class="prose fold long ${open ? 'open' : ''}">${esc(text)}</div><button class="foldbtn ghost" data-fold="${id}">${open ? '접기' : '더보기'}</button>`;
+}
+
+function renderFace(p, ai){
+  const au = p.aus[ai];
+  const cs = [0,1].map(ci => ({
+    name:dispName(p, ai, ci), color:R(p, ai, ci, 'color').v, img:R(p, ai, ci, 'img'),
+    age:R(p, ai, ci, 'age').v, job:R(p, ai, ci, 'job').v, kw:kwList(R(p, ai, ci, 'kw').v)
+  }));
+  const card = c => `<div class="pc" style="--cc:${esc(c.color)}">
+      ${c.img.v ? `<img src="${c.img.v}" alt="">` : ''}
+      <div class="nm">${esc(c.name)}</div>
+      ${[c.age, c.job].filter(Boolean).length ? `<div class="meta">${esc([c.age, c.job].filter(Boolean).join(' · '))}</div>` : ''}
+      ${c.kw.length ? `<div class="chips">${c.kw.map(k => `<span class="chip">${esc(k)}</span>`).join('')}</div>` : ''}
+    </div>`;
+  const mid = `<div class="mid">
+      ${au.callAB ? `<div class="call" style="color:${esc(cs[0].color)}">“${esc(au.callAB)}”</div>` : ''}
+      ${arrow('r', cs[0].color)}
+      ${arrow('l', cs[1].color)}
+      ${au.callBA ? `<div class="call" style="color:${esc(cs[1].color)}">“${esc(au.callBA)}”</div>` : ''}
+    </div>`;
+  const tint = (hex) => hex + '22';
+  const lines = (au.lineAB || au.lineBA) ? `<div class="lines">
+      ${au.lineAB ? `<div class="bub l" style="background:${tint(cs[0].color)}"><span class="who" style="color:${esc(cs[0].color)}">${esc(cs[0].name)} → ${esc(cs[1].name)}</span>${esc(au.lineAB)}</div>` : ''}
+      ${au.lineBA ? `<div class="bub r" style="background:${tint(cs[1].color)}"><span class="who" style="color:${esc(cs[1].color)}">${esc(cs[1].name)} → ${esc(cs[0].name)}</span>${esc(au.lineBA)}</div>` : ''}
+    </div>` : '';
+  const rel = (au.relation || au.story) ? `<div class="sec"><h3>관계성</h3>
+      ${au.relation ? `<div class="rel">${esc(au.relation)}</div>` : ''}
+      ${au.story ? foldBlock('story-' + au.id, au.story) : ''}
+    </div>` : '';
+  const diff = (ai > 0 && au.diff) ? `<div class="sec"><h3>원작과 달라진 점</h3>${foldBlock('diff-' + au.id, au.diff)}</div>` : '';
+
+  const dets = [0,1].map(ci => {
+    const rows = DETAIL_KEYS.map(([k, l]) => {
+      const v = R(p, ai, ci, k).v; if (!v) return '';
+      const val = k === 'song' && isUrl(v) ? `<a href="${esc(v.trim())}" target="_blank" rel="noopener">${esc(v)}</a>` : esc(v);
+      return `<dt>${l}</dt><dd>${val}</dd>`;
+    }).join('');
+    return rows ? `<div class="det" style="--cc:${esc(cs[ci].color)}"><div class="who">${esc(cs[ci].name)}</div><dl class="kv">${rows}</dl></div>` : '';
+  }).join('');
+  const detSec = dets ? (showDetails
+      ? `<div class="sec"><h3>자세히</h3>${dets}</div><button class="toggle-det ghost" id="detBtn">자세히 접기</button>`
+      : `<button class="toggle-det ghost" id="detBtn">캐릭터 자세히 보기 ▾</button>`) : '';
+
+  const credits = [...new Set(cs.map(c => (c.img.v && c.img.credit || '').trim()).filter(Boolean))];
+  const nothing = !au.intro && !au.relation && !au.story && !au.callAB && !au.callBA && !au.lineAB && !au.lineBA && !cs[0].age && !cs[0].job && !cs[1].age && !cs[1].job && !dets;
+
+  return `<div class="cap" id="cap" style="--au:${esc(au.color)}">
+    <div class="au-head"><div class="au-name">${esc(au.name || '이름 없는 AU')}</div>${au.intro ? `<div class="au-intro">${esc(au.intro)}</div>` : ''}</div>
+    <div class="duo">${card(cs[0])}${mid}${card(cs[1])}</div>
+    ${lines}${rel}${diff}${detSec}
+    ${nothing ? `<div class="empty noexp">위의 편집 버튼을 눌러 내용을 채워보세요</div>` : ''}
+    ${credits.length ? `<div class="credit">ⓒ ${esc(credits.join(', '))}</div>` : ''}
+  </div>`;
+}
+
+function renderTable(p){
+  const n = p.aus.length;
+  const head = `<tr><th class="rowh"></th>${p.aus.map(a => `<th><button class="auh" data-goto="${a.id}"><i style="background:${esc(a.color)}"></i>${esc(a.name || '이름 없는 AU')}</button></th>`).join('')}</tr>`;
+  const charRow = (label, k) => {
+    let any = false;
+    const tds = p.aus.map((a, ai) => {
+      const cell = [0,1].map(ci => {
+        const r = k === 'name' ? {v:dispName(p, ai, ci), inh:R(p, ai, ci, 'name').inh} : R(p, ai, ci, k);
+        if (r.v && k !== 'name') any = true;
+        return `<div class="ab"><i style="background:${esc(R(p, ai, ci, 'color').v)}"></i><span class="${r.inh ? 'inh' : ''}">${esc(r.v || '-')}</span></div>`;
+      }).join('');
+      return `<td>${cell}</td>`;
+    }).join('');
+    return (any || k === 'name') ? `<tr><td class="rowh">${label}</td>${tds}</tr>` : '';
+  };
+  const auRow = (label, k) => p.aus.some(a => a[k]) ? `<tr><td class="rowh">${label}</td>${p.aus.map(a => `<td>${esc(a[k] || '-')}</td>`).join('')}</tr>` : '';
+  const pairRow = (label, kab, kba, quote) => {
+    if (!p.aus.some(a => a[kab] || a[kba])) return '';
+    return `<tr><td class="rowh">${label}</td>${p.aus.map((a, ai) => {
+      const q = s => s ? (quote ? `“${esc(s)}”` : esc(s)) : '-';
+      return `<td><div class="ab"><i style="background:${esc(R(p, ai, 0, 'color').v)}"></i><span>→ ${q(a[kab])}</span></div><div class="ab"><i style="background:${esc(R(p, ai, 1, 'color').v)}"></i><span>→ ${q(a[kba])}</span></div></td>`;
+    }).join('')}</tr>`;
+  };
+  const body = [
+    auRow('소개', 'intro'),
+    charRow('이름', 'name'), charRow('나이', 'age'), charRow('소속 / 직업', 'job'),
+    charRow('키 / 체격', 'height'), charRow('생일', 'birthday'), charRow('성격', 'kw'),
+    auRow('관계', 'relation'),
+    pairRow('호칭', 'callAB', 'callBA', true), pairRow('한마디', 'lineAB', 'lineBA', false)
+  ].join('');
+  const credits = [];
+  p.aus.forEach((a, ai) => [0,1].forEach(ci => { const r = R(p, ai, ci, 'img'); if (r.v && r.credit && r.credit.trim()) credits.push(r.credit.trim()); }));
+  const uc = [...new Set(credits)];
+  return `<div class="tcap" id="cap">
+    <div class="ttl">${esc(p.name)}</div>
+    <div class="twrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+    <div class="tnote noexp">${n > 1 ? '흐린 글씨는 원작 값을 그대로 따라가는 항목이에요. AU 이름을 누르면 마주보기로 이동해요.' : 'AU를 추가하면 여기서 나란히 비교할 수 있어요.'}</div>
+    ${uc.length ? `<div class="credit">ⓒ ${esc(uc.join(', '))}</div>` : ''}
+  </div>`;
+}
+
+/* ---------- main events ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.au){ S.auId = t.dataset.au; S.view = 'face'; save(); render(); return; }
+  if (t.id === 'addAu'){ addAU(); return; }
+  if (t.dataset.view){ S.view = t.dataset.view; save(); render(); return; }
+  if (t.dataset.goto){ S.auId = t.dataset.goto; S.view = 'face'; save(); render(); window.scrollTo({top:0, behavior:'smooth'}); return; }
+  if (t.dataset.fold){ const id = t.dataset.fold; openFolds.has(id) ? openFolds.delete(id) : openFolds.add(id); render(); return; }
+  if (t.id === 'detBtn'){ showDetails = !showDetails; render(); return; }
+});
+$('#pairSel').addEventListener('change', e => { S.cur = e.target.value; S.auId = pair().aus[0].id; save(); render(); });
+$('#editBtn').addEventListener('click', () => openEditor());
+$('#pngBtn').addEventListener('click', exportPNG);
+$('#menuBtn').addEventListener('click', openMenu);
+
+function addAU(){
+  const p = pair(); const au = newAU(false, p.aus.length);
+  p.aus.push(au); S.auId = au.id; S.view = 'face'; save(); render(); openEditor();
+}
+
+/* ---------- modal helpers ---------- */
+function modal(title, bodyHTML, footHTML){
+  const ov = document.createElement('div'); ov.className = 'ov';
+  ov.innerHTML = `<div class="sheet" role="dialog" aria-modal="true"><div class="sh-head"><b>${title}</b><button class="ghost x" aria-label="닫기">닫기</button></div><div class="sh-body">${bodyHTML}</div>${footHTML ? `<div class="sh-foot">${footHTML}</div>` : ''}</div>`;
+  document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  const close = () => { ov.remove(); if (!document.querySelector('.ov')) document.body.style.overflow = ''; ov.onclose && ov.onclose(); };
+  ov.querySelector('.x').onclick = close;
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  ov.close = close;
+  return ov;
+}
+function ask(title, msg, btns){
+  return new Promise(res => {
+    const ov = modal(title, `<p style="margin:0;white-space:pre-wrap">${esc(msg)}</p>`,
+      btns.map((b, i) => `<button data-i="${i}" class="${b.cls || ''}">${b.label}</button>`).join(''));
+    ov.onclose = () => res(null);
+    ov.querySelectorAll('.sh-foot button').forEach(b => b.onclick = () => { ov.onclose = null; ov.close(); res(btns[+b.dataset.i].value); });
+  });
+}
+
+/* ---------- editor ---------- */
+function fieldHTML(bind, label, val, opts = {}){
+  const dis = opts.disabled ? 'disabled' : '';
+  const same = opts.sameBind ? `<span class="same"><input type="checkbox" data-b="${opts.sameBind}" ${opts.disabled ? 'checked' : ''}>원작과 같음</span>` : '';
+  const ph = esc(opts.ph || '');
+  const input = opts.area
+    ? `<textarea data-b="${bind}" class="${opts.tall ? 'tall' : ''}" placeholder="${ph}" ${dis}>${esc(val)}</textarea>`
+    : `<input type="text" data-b="${bind}" value="${esc(val)}" placeholder="${ph}" ${dis}>`;
+  return `<div class="f"><label><span>${label}</span>${same}</label>${input}${opts.hint ? `<div class="hint">${opts.hint}</div>` : ''}</div>`;
+}
+const short = s => { s = String(s || '').replace(/\s+/g, ' '); return s.length > 24 ? s.slice(0, 24) + '…' : s; };
+
+function charGroup(p, ai, ci){
+  const au = p.aus[ai], c = au.chars[ci], b = p.aus[0].chars[ci], isBase = ai === 0;
+  const color = R(p, ai, ci, 'color').v;
+  let h = `<div class="grp"><h4><i style="background:${esc(color)}"></i>${esc(dispName(p, ai, ci))}</h4>`;
+  CF.forEach(f => {
+    const ph = !isBase && b[f.k] ? '원작: ' + short(b[f.k]) : (f.ph || '');
+    const disabled = !isBase && f.toggle && c[f.k + 'Same'];
+    h += fieldHTML(`c${ci}:${f.k}`, f.label, c[f.k], {area:f.area, ph, disabled, sameBind: !isBase && f.toggle ? `c${ci}:${f.k}Same` : ''});
+  });
+  if (isBase){
+    h += `<div class="f"><label><span>대표 색</span></label><div class="sw">${CHAR_COLORS.map(col => `<button style="background:${col}" data-setcolor="c${ci}:color" data-col="${col}" aria-label="${col}"></button>`).join('')}<input type="color" data-b="c${ci}:color" value="${esc(c.color || DEF_CC[ci])}"></div></div>`;
+  }
+  const img = c.img || (!isBase && b.img) || '';
+  h += `<div class="f"><label><span>프로필 그림</span></label><div class="imgrow"><div class="pv" style="${img ? `background-image:url(${img})` : ''}"></div><div class="btns"><button data-upimg="${ci}">${c.img ? '바꾸기' : '올리기'}</button>${c.img ? `<button data-rmimg="${ci}" class="danger">삭제</button>` : ''}</div></div>${!isBase ? `<div class="hint">${c.img ? '이 AU 전용 그림이에요.' : '비워두면 원작 그림을 그대로 써요.'}</div>` : ''}</div>`;
+  h += fieldHTML(`c${ci}:credit`, '그림 출처', c.credit, {ph: !isBase && b.credit && !c.img ? '원작: ' + short(b.credit) : '커미션주 이름 등', hint:'PNG로 저장하면 오른쪽 아래에 ⓒ와 함께 표시돼요.'});
+  return h + '</div>';
+}
+
+function openEditor(){
+  const p = pair(), ai = auIdx(), au = p.aus[ai], isBase = ai === 0;
+  const nA = dispName(p, ai, 0), nB = dispName(p, ai, 1);
+  let body = `<div class="grp"><h4>AU 정보</h4>
+    ${fieldHTML('au:name', 'AU 이름', au.name, {ph:'학원AU, 10년 후'})}
+    ${fieldHTML('au:intro', '한 줄 소개', au.intro, {ph:'현대 학원물, 같은 동아리'})}
+    <div class="f"><label><span>테마 색</span></label><div class="sw">${AU_COLORS.map(col => `<button style="background:${col}" data-setcolor="au:color" data-col="${col}" aria-label="${col}"></button>`).join('')}<input type="color" data-b="au:color" value="${esc(au.color)}"></div></div>
+    ${fieldHTML('au:relation', '관계', au.relation, {ph:'동료, 선후배, 부부'})}
+    ${fieldHTML('au:story', '관계성 / 짧은 서사', au.story, {area:true, tall:true, ph:'두 사람이 어떻게 만났고 어떤 사이인지'})}
+    ${!isBase ? fieldHTML('au:diff', '원작과 달라진 점', au.diff, {area:true}) : ''}
+  </div>`;
+  body += charGroup(p, ai, 0) + charGroup(p, ai, 1);
+  body += `<div class="grp"><h4>둘 사이</h4>
+    <div class="two">${fieldHTML('au:callAB', 'A → B 호칭', au.callAB, {ph:'선배'})}${fieldHTML('au:callBA', 'B → A 호칭', au.callBA, {ph:'야'})}</div>
+    ${fieldHTML('au:lineAB', 'A → B 한마디', au.lineAB, {area:true, ph:'비워두면 안 보여요'})}
+    ${fieldHTML('au:lineBA', 'B → A 한마디', au.lineBA, {area:true, ph:'비워두면 안 보여요'})}
+    <div class="hint">A는 ${esc(nA)}, B는 ${esc(nB)}이에요.</div>
+  </div>`;
+  if (!isBase) body += `<div class="hint" style="margin-bottom:8px">캐릭터 칸을 비워두면 원작 값을 그대로 따라가요.</div>`;
+  const foot = isBase
+    ? `<span></span><button class="primary" data-done>완료</button>`
+    : `<div style="display:flex;gap:6px"><button data-mv="-1" aria-label="앞으로">←</button><button data-mv="1" aria-label="뒤로">→</button><button class="danger" data-del>삭제</button></div><button class="primary" data-done>완료</button>`;
+  const ov = modal(isBase ? '원작 편집' : 'AU 편집', body, foot);
+
+  const sync = el => {
+    const [s, k] = el.dataset.b.split(':');
+    const tgt = s === 'au' ? au : au.chars[+s[1]];
+    tgt[k] = el.type === 'checkbox' ? el.checked : el.value;
+    if (el.type === 'checkbox'){
+      const inp = ov.querySelector(`[data-b="${s}:${k.replace('Same', '')}"]`);
+      if (inp) inp.disabled = el.checked;
+    }
+    save(); render();
+  };
+  ov.addEventListener('input', e => { if (e.target.dataset.b) sync(e.target); });
+  ov.addEventListener('click', async e => {
+    const t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.setcolor){
+      const inp = ov.querySelector(`input[type=color][data-b="${t.dataset.setcolor}"]`);
+      inp.value = t.dataset.col; sync(inp);
+    }
+    if (t.dataset.upimg !== undefined){ pickImage(+t.dataset.upimg, () => { ov.close(); openEditor(); }); }
+    if (t.dataset.rmimg !== undefined){ au.chars[+t.dataset.rmimg].img = ''; save(); render(); ov.close(); openEditor(); }
+    if (t.dataset.done !== undefined) ov.close();
+    if (t.dataset.mv){
+      const i = p.aus.indexOf(au), j = i + (+t.dataset.mv);
+      if (j < 1 || j >= p.aus.length){ toast(j < 1 ? '원작 탭은 항상 맨 앞에 있어요' : '이미 맨 끝이에요'); return; }
+      [p.aus[i], p.aus[j]] = [p.aus[j], p.aus[i]]; save(); render();
+    }
+    if (t.dataset.del !== undefined){
+      const ok = await ask('AU 삭제', `"${au.name || '이름 없는 AU'}"를 삭제할까요? 되돌릴 수 없어요.`, [{label:'취소', value:false}, {label:'삭제', value:true, cls:'danger'}]);
+      if (ok){ p.aus.splice(p.aus.indexOf(au), 1); S.auId = p.aus[0].id; save(); ov.close(); render(); }
+    }
+  });
+}
+
+/* ---------- image crop ---------- */
+let imgCb = null, imgCi = 0;
+function pickImage(ci, cb){ imgCi = ci; imgCb = cb; $('#imgFile').value = ''; $('#imgFile').click(); }
+$('#imgFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => { const im = new Image(); im.onload = () => openCropper(im); im.onerror = () => toast('이 형식의 사진은 열 수 없어요. JPG나 PNG로 바꿔서 올려주세요.'); im.src = rd.result; };
+  rd.readAsDataURL(f);
+});
+
+function openCropper(im){
+  const ov = modal('사진 자르기',
+    `<div class="crop-stage"><canvas width="600" height="600"></canvas></div>
+     <div class="zoomrow"><span>－</span><input type="range" min="1" max="4" step="0.01" value="1" aria-label="확대"><span>＋</span></div>
+     <div class="hint" style="text-align:center;margin-top:8px">드래그해서 위치를 옮기고, 슬라이더나 두 손가락으로 확대해요.</div>`,
+    `<button data-cancel>취소</button><button class="primary" data-ok>적용</button>`);
+  const cv = ov.querySelector('canvas'), ctx = cv.getContext('2d'), SZ = 600, R0 = SZ / 2 - 14;
+  const base = SZ / Math.min(im.width, im.height);
+  let z = 1, sc = base, x = (SZ - im.width * sc) / 2, y = (SZ - im.height * sc) / 2;
+  const range = ov.querySelector('input[type=range]');
+  const clamp = () => {
+    const w = im.width * sc, h = im.height * sc;
+    const lo = SZ / 2 - R0, hi = SZ / 2 + R0;
+    x = Math.min(lo, Math.max(hi - w, x)); y = Math.min(lo, Math.max(hi - h, y));
+  };
+  const draw = () => {
+    ctx.fillStyle = '#222'; ctx.fillRect(0, 0, SZ, SZ);
+    ctx.drawImage(im, x, y, im.width * sc, im.height * sc);
+    ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.beginPath(); ctx.rect(0, 0, SZ, SZ);
+    ctx.arc(SZ / 2, SZ / 2, R0, 0, Math.PI * 2, true); ctx.fill('evenodd'); ctx.restore();
+    ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(SZ / 2, SZ / 2, R0, 0, Math.PI * 2); ctx.stroke();
+  };
+  const setZoom = (nz, cx = SZ / 2, cy = SZ / 2) => {
+    nz = Math.min(4, Math.max(1, nz));
+    const ns = base * nz;
+    const ix = (cx - x) / sc, iy = (cy - y) / sc;
+    z = nz; sc = ns; x = cx - ix * sc; y = cy - iy * sc; clamp(); draw(); range.value = z;
+  };
+  setZoom(1);
+  range.addEventListener('input', () => setZoom(+range.value));
+  const pts = new Map(); let last = null, pinch = null;
+  const pos = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX - r.left) * SZ / r.width, y:(e.clientY - r.top) * SZ / r.height}; };
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); pts.set(e.pointerId, pos(e)); last = pos(e); pinch = null; });
+  cv.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, pos(e));
+    if (pts.size === 2){
+      const [a, b] = [...pts.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y), c = {x:(a.x + b.x) / 2, y:(a.y + b.y) / 2};
+      if (pinch){ setZoom(pinch.z * d / pinch.d, c.x, c.y); } else pinch = {d, z};
+      return;
+    }
+    const p = pos(e); if (last){ x += p.x - last.x; y += p.y - last.y; clamp(); draw(); } last = p;
+  });
+  const up = e => { pts.delete(e.pointerId); pinch = null; last = pts.size === 1 ? [...pts.values()][0] : null; };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  cv.addEventListener('wheel', e => { e.preventDefault(); const p = pos(e); setZoom(z * (e.deltaY < 0 ? 1.08 : 1 / 1.08), p.x, p.y); }, {passive:false});
+
+  ov.querySelector('[data-cancel]').onclick = () => ov.close();
+  ov.querySelector('[data-ok]').onclick = () => {
+    const OUT = 480, out = document.createElement('canvas'); out.width = out.height = OUT;
+    const o = out.getContext('2d'), k = OUT / (2 * R0), ox = SZ / 2 - R0, oy = SZ / 2 - R0;
+    o.fillStyle = '#fff'; o.fillRect(0, 0, OUT, OUT);
+    o.drawImage(im, (x - ox) * k, (y - oy) * k, im.width * sc * k, im.height * sc * k);
+    const p = pair(), au = p.aus[auIdx()];
+    au.chars[imgCi].img = out.toDataURL('image/jpeg', 0.88);
+    save(); render(); ov.close(); imgCb && imgCb();
+  };
+}
+
+/* ---------- PNG export ---------- */
+async function exportPNG(){
+  if (!window.html2canvas){ toast('이미지 저장 도구를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.'); return; }
+  const btn = $('#pngBtn'); btn.disabled = true; btn.textContent = '저장 중…';
+  document.body.classList.add('exporting');
+  try{
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    const el = $('#cap');
+    const canvas = await html2canvas(el, {scale:2, backgroundColor:null, useCORS:true, windowWidth:Math.max(document.documentElement.clientWidth, el.scrollWidth + 40)});
+    const p = pair(), au = p.aus[auIdx()];
+    const fname = (S.view === 'face' ? `${p.name}_${au.name || 'AU'}` : `${p.name}_비교표`).replace(/[\\/:*?"<>|]/g, '_') + '.png';
+    await new Promise(res => canvas.toBlob(b => {
+      const url = URL.createObjectURL(b), a = document.createElement('a');
+      a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000); res();
+    }, 'image/png'));
+    toast('PNG로 저장했어요');
+  }catch(e){ console.error(e); toast('저장 중에 문제가 생겼어요. 다시 시도해 주세요.'); }
+  finally{ document.body.classList.remove('exporting'); btn.disabled = false; btn.textContent = 'PNG 저장'; }
+}
+
+/* ---------- menu, backup ---------- */
+function download(obj, name){
+  const b = new Blob([JSON.stringify(obj, null, 1)], {type:'application/json'});
+  const url = URL.createObjectURL(b), a = document.createElement('a');
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+const today = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`; };
+
+function openMenu(){
+  const ov = modal('메뉴', `<div class="menu">
+    <button data-m="new">새 페어 만들기</button>
+    <button data-m="rename">페어 이름 바꾸기</button>
+    <button data-m="delete" class="danger">이 페어 삭제</button>
+    <hr>
+    <button data-m="exportAll">전체 백업하기 (JSON)</button>
+    <button data-m="exportOne">이 페어만 내보내기 (JSON)</button>
+    <button data-m="import">백업 불러오기</button>
+  </div>`);
+  ov.addEventListener('click', async e => {
+    const t = e.target.closest('[data-m]'); if (!t) return;
+    const m = t.dataset.m, p = pair();
+    if (m === 'new'){
+      const n = prompt('새 페어 이름', '새 페어'); if (n === null) return;
+      const np = newPair(n.trim() || '새 페어'); S.pairs.push(np); S.cur = np.id; S.auId = np.aus[0].id; S.view = 'face';
+      save(); render(); ov.close(); openEditor();
+    }
+    if (m === 'rename'){
+      const n = prompt('페어 이름', p.name); if (n === null) return;
+      p.name = n.trim() || p.name; save(); render(); ov.close();
+    }
+    if (m === 'delete'){
+      const ok = await ask('페어 삭제', `"${p.name}"와 그 안의 AU를 모두 삭제할까요? 되돌릴 수 없어요.`, [{label:'취소', value:false}, {label:'삭제', value:true, cls:'danger'}]);
+      if (!ok) return;
+      S.pairs = S.pairs.filter(x => x !== p);
+      if (!S.pairs.length) S.pairs.push(newPair('새 페어'));
+      S.cur = S.pairs[0].id; S.auId = S.pairs[0].aus[0].id; save(); render(); ov.close();
+    }
+    if (m === 'exportAll'){ download({app:'oc-pair-au', v:1, pairs:S.pairs}, `AU정리장_백업_${today()}.json`); ov.close(); toast('백업 파일을 저장했어요'); }
+    if (m === 'exportOne'){ download({app:'oc-pair-au', v:1, pairs:[p]}, `${p.name.replace(/[\\/:*?"<>|]/g, '_')}_${today()}.json`); ov.close(); }
+    if (m === 'import'){ ov.close(); $('#jsonFile').value = ''; $('#jsonFile').click(); }
+  });
+}
+
+$('#jsonFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = async () => {
+    let d;
+    try{ d = JSON.parse(rd.result); }catch(err){ toast('JSON 파일을 읽을 수 없어요'); return; }
+    if (!d || !Array.isArray(d.pairs) || !d.pairs.length){ toast('AU 정리장 백업 파일이 아닌 것 같아요'); return; }
+    const pairs = d.pairs.map(normPair);
+    const how = await ask('백업 불러오기', `페어 ${pairs.length}개가 들어 있어요.\n\n덮어쓰기: 지금 있는 내용을 지우고 백업으로 바꿔요.\n추가하기: 지금 내용은 두고 페어만 더해요.`,
+      [{label:'추가하기', value:'add'}, {label:'덮어쓰기', value:'replace', cls:'danger'}]);
+    if (!how) return;
+    if (how === 'replace') S.pairs = pairs;
+    else pairs.forEach(p => { p.id = uid(); p.aus.forEach(a => a.id = uid()); S.pairs.push(p); });
+    const first = how === 'replace' ? S.pairs[0] : S.pairs[S.pairs.length - pairs.length];
+    S.cur = first.id; S.auId = first.aus[0].id; S.view = 'face';
+    save(); render(); toast('불러왔어요');
+  };
+  rd.readAsText(f);
+});
+
+render();
+</script>
+</body>
+</html>
